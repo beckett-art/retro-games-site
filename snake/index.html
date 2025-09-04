@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head><title>Snake</title></head>
+<body>
+<canvas id="game" width="400" height="400" style="background:#000"></canvas>
+<script>
+let canvas = document.getElementById("game"), ctx = canvas.getContext("2d");
+let pos = {x: 10, y: 10}, trail = [], tail = 5, grid = 20, ax = 15, ay = 15, dx = 0, dy = 0;
+document.addEventListener("keydown", e => {
+  if(e.key=="ArrowLeft") dx=-1,dy=0;
+  if(e.key=="ArrowUp") dx=0,dy=-1;
+  if(e.key=="ArrowRight") dx=1,dy=0;
+  if(e.key=="ArrowDown") dx=0,dy=1;
+});
+setInterval(() => {
+  pos.x += dx; pos.y += dy;
+  if(pos.x<0)pos.x=grid-1;if(pos.x>=grid)pos.x=0;
+  if(pos.y<0)pos.y=grid-1;if(pos.y>=grid)pos.y=0;
+  ctx.fillStyle="#000";ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="lime";
+  for(let t of trail) ctx.fillRect(t.x*20,t.y*20,18,18);
+  trail.push({x:pos.x,y:pos.y});
+  while(trail.length>tail)trail.shift();
+  if(pos.x==ax && pos.y==ay){tail++;ax=Math.floor(Math.random()*grid);ay=Math.floor(Math.random()*grid);}
+  ctx.fillStyle="red";ctx.fillRect(ax*20,ay*20,18,18);
+}, 100);
+</script>
+</body>
+</html>
